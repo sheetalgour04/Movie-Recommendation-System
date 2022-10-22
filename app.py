@@ -3,11 +3,21 @@ import streamlit as st
 import pickle
 import requests 
 
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+
 
 movies = pickle.load(open("movie.pkl","rb"))
 
+cv = CountVectorizer(stop_words='english' , max_features= 5000)
+vector= cv.fit_transform(movies['tags']).toarray()
 
-similarity = pickle.load(open("similarity.pkl","rb"))
+
+similarity = cosine_similarity(vector)
+
+
+# similarity = pickle.load(open("similarity.pkl","rb"))
 
 # def decompress_pickle(file):
 
@@ -71,9 +81,3 @@ if st.button("Recommend"):
     with col6:
         st.text(name[5])
         st.image(posters[5])
-
-
-    
-
-
-
